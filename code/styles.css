@@ -1,15 +1,23 @@
 .container {
-    width: 90%;
     margin: 0 auto;
     text-align: center;
 }
 
 .game {
     margin: 50px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.game-board {
     width: 50%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.player {
+    width: 25%;
 }
 
 .game button {
@@ -20,4 +28,8 @@
 button:hover {
     border: 2px solid #2B98F4;
     cursor: pointer;
+}
+
+li {
+    text-align: left;
 }
