@@ -37,6 +37,23 @@ const makePlayer = function () {
     };
 };
 
+// An object used to represent the game board (with the 9 buttons).
+// Where each key-value pair holds an array value in which holds 3 elements:
+//      1- The actual btn element selected using JQuery.
+//      2- The img element inside the button.
+//      3- The src value for the img elment.
+const board = {
+    btn1: [$('#btn-1'), $('btn-1 img'), ''],
+    btn2: [$('#btn-2'), $('btn-2 img'), ''],
+    btn3: [$('#btn-3'), $('btn-3 img'), ''],
+    btn4: [$('#btn-4'), $('btn-4 img'), ''],
+    btn5: [$('#btn-5'), $('btn-5 img'), ''],
+    btn6: [$('#btn-6'), $('btn-6 img'), ''],
+    btn7: [$('#btn-7'), $('btn-7 img'), ''],
+    btn8: [$('#btn-8'), $('btn-8 img'), ''],
+    btn9: [$('#btn-9'), $('btn-9 img'), ''],
+};
+
 // Create and save player objects in seperate variables
 const playerX = makePlayer();
 const playerO = makePlayer();
