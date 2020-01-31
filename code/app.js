@@ -4,7 +4,7 @@
 //  it's false otherwise.
 // The squaresControlled array will hold the IDs for the squares that the player clicked.
 // The squaresControlled will be used to determine win cases.
-const makePlayer = function () {
+const makePlayer = function (imgSrc) {
     let winCount = 0;
     let tieCount = 0;
     let lossCount = 0;
@@ -12,6 +12,7 @@ const makePlayer = function () {
     return {
         isPlaying: false,
         suqaresControlled: [],
+        imgSrc: imgSrc,
         win: function () {
             winCount += 1;
             return winCount;
@@ -41,8 +42,8 @@ const makePlayer = function () {
 };
 
 // Create and save player objects in seperate variables
-const playerX = makePlayer();
-const playerO = makePlayer();
+const playerX = makePlayer('../images/x.png');
+const playerO = makePlayer('../images/o.png');
 
 // Function that will run everytime the game starts.
 // It's responsible for randomly deciding which player will start the game
@@ -128,14 +129,14 @@ const suqareClicked = function () {
 // as parameters and execute necessary steps based on the choice.
 const executeTurn = function (player, squareId) {
     // Chnage the img of the square based on the player the clicked it.
-    $(`#${currentSquareId} img`).attr('src', '../images/x.png');
+    $(`#${squareId} img`).attr('src', player.imgSrc);
 
     // Add the square id to the controlled squares of the player that chose it.
-    playerX.suqaresControlled.push(currentSquareId);
+    player.suqaresControlled.push(squareId);
 
     // Check the player's controlled squares for win condition.
-    if (checkWin(playerX.suqaresControlled))
-        playerX.win(); // call win method to increase player score
+    if (checkWin(player.suqaresControlled))
+        player.win(); // call win method to increase player score
     else {
 
     }
