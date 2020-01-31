@@ -41,3 +41,27 @@ const makePlayer = function () {
 const playerX = makePlayer();
 const playerO = makePlayer();
 
+// Function that will run everytime the game starts.
+// It's responsible for randomly deciding which player will start the game
+const coinToss = function () {
+
+    // generating a random whole number between 1 and 2.
+    // if it's 1 => playerX goes first.
+    // if it's 2 => playerO goes first.
+    const random = Math.floor(Math.random() * 2) + 1;
+
+    if (random === 1) {
+        playerX.play();
+        playerO.wait();
+    } else {
+        playerO.play();
+        playerX.wait();
+    }
+};
+
+// Function to start the game initially.
+// It's only called once when the script runs for the first time 
+const startGame = function () {
+
+    coinToss();
+};
