@@ -106,20 +106,48 @@ const winCombinations = [
 // Example of winning combinations: [square1,square2,square3] which are the 3 suqares in the first row.
 const checkWin = function (squaresControlled) {
 
+    // check if the player controls at least 3 squares before checking for win condition
+    if (squaresControlled.length >= 3) {
+
+        // Iterate over the winCombinations array and check if the controlled array
+        // contains a winning combination.
+        for (let i = 0; i < winCombinations.length; i++) {
+            const currentElement = winCombinations[i];
+
+            // Variable will be true if all three elements of the win combination array
+            // are present in the squaresControlled array.
+            const isWin = currentElement.every(el => {
+                squaresControlled.indexOf(el);
+            });
+
+            if (isWin)
+                return true;
+        }
+    }
+
+    return false;
 };
 
 // Callback function that gets called when a square is clicked by a player.
 const suqareClicked = function () {
     // Put the element clicked into a variable.
-    const currentSquare = $(this);
+    const currentSquareId = $(this).attr('id');
 
-    // Add the square id to the controlled squares of the player that chose it.
-    // check the player's controlled squares for win condition.
     if (playerX.isPlaying) {
-        playerX.suqaresControlled.push(currentSquare.id);
-        checkWin(playerX.suqaresControlled);
-    } else {
+        // Chnage the img of the square based on the player the clicked it.
+        $(`#${currentSquareId} img`).attr('src', '../images/x.png');
 
+        // Add the square id to the controlled squares of the player that chose it.
+        playerX.suqaresControlled.push(currentSquareId);
+
+        // Check the player's controlled squares for win condition.
+        if (checkWin(playerX.suqaresControlled))
+            playerX.win(); // call win method to increase player score
+    } else {
+        $(`#${currentSquareId} img`).attr('src', '../images/o.png');
+        playerO.suqaresControlled.push(currentSquareId);
+        if (checkWin(playerO.suqaresControlled))
+            playerO.win();
     }
 };
 
@@ -132,7 +160,7 @@ const startGame = function () {
     // Register click events for all buttons on the board
     const gameBoard = $('.game-board button');
     for (let i = 0; i < gameBoard.length; i++) {
-        gameBoard[i].click(suqareClicked);
+        $(gameBoard[i]).click(suqareClicked);
     }
 
     // while (true) {
