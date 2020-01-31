@@ -2,6 +2,8 @@
 // Where there're 3 varibales to keep count of the players' wins, ties, and losses.
 // The isPlaying key-value pair is true when it's the players turn to play and 
 //  it's false otherwise.
+// The squaresControlled array will hold the IDs for the squares that the player clicked.
+// The squaresControlled will be used to determine win cases.
 const makePlayer = function () {
     let winCount = 0;
     let tieCount = 0;
@@ -9,6 +11,7 @@ const makePlayer = function () {
 
     return {
         isPlaying: false,
+        suqaresControlled: [],
         win: function () {
             winCount += 1;
             return winCount;
@@ -86,8 +89,9 @@ const updateTurnHeader = function () {
         turnHeader.text('Player O');
 };
 
+// 
+
 // Function to start the game initially.
-// It's only called once when the script runs for the first time 
 const startGame = function () {
 
     coinToss();
