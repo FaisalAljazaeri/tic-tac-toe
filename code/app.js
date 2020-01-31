@@ -112,6 +112,16 @@ const checkWin = function (squaresControlled) {
     return false;
 };
 
+// Function to handle switching player turns
+const endTurn = function () {
+    // Switch the active player
+    playerX.isPlaying = !playerX.isPlaying;
+    playerO.isPlaying = !playerO.isPlaying;
+
+    // Update the header to view current player
+    updateTurnHeader();
+};
+
 // Callback function that gets called when a square is clicked by a player.
 const suqareClicked = function () {
     // Put the ID of the element clicked into a variable.
@@ -138,7 +148,7 @@ const executeTurn = function (player, squareId) {
     if (checkWin(player.suqaresControlled))
         player.win(); // call win method to increase player score
     else {
-
+        endTurn();
     }
 };
 
@@ -153,10 +163,6 @@ const startGame = function () {
     for (let i = 0; i < gameBoard.length; i++) {
         $(gameBoard[i]).click(suqareClicked);
     }
-
-    // while (true) {
-
-    // }
 };
 
 // Calling the function to start the game when the script is loaded.
