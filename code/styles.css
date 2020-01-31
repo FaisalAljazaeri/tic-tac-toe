@@ -23,6 +23,7 @@
 .game button {
     width: 33%;
     height: 130px;
+    padding: 0;
 }
 
 button:hover {
@@ -32,4 +33,9 @@ button:hover {
 
 li {
     text-align: left;
+}
+
+button img {
+    height: inherit;
+    width: 100%;
 }
