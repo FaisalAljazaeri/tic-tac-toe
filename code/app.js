@@ -113,24 +113,31 @@ const checkWin = function (squaresControlled) {
 
 // Callback function that gets called when a square is clicked by a player.
 const suqareClicked = function () {
-    // Put the element clicked into a variable.
-    const currentSquareId = $(this).attr('id');
+    // Put the ID of the element clicked into a variable.
+    const squareId = $(this).attr('id');
 
-    if (playerX.isPlaying) {
-        // Chnage the img of the square based on the player the clicked it.
-        $(`#${currentSquareId} img`).attr('src', '../images/x.png');
+    // pass the current player to the execute function
+    if (playerX.isPlaying)
+        executeTurn(playerX, squareId);
+    else
+        executeTurn(playerO, squareId);
+};
 
-        // Add the square id to the controlled squares of the player that chose it.
-        playerX.suqaresControlled.push(currentSquareId);
+// Function responsible for executing a player's turn
+// Takes the player that's playing, and the ID of the suqare they chose 
+// as parameters and execute necessary steps based on the choice.
+const executeTurn = function (player, squareId) {
+    // Chnage the img of the square based on the player the clicked it.
+    $(`#${currentSquareId} img`).attr('src', '../images/x.png');
 
-        // Check the player's controlled squares for win condition.
-        if (checkWin(playerX.suqaresControlled))
-            playerX.win(); // call win method to increase player score
-    } else {
-        $(`#${currentSquareId} img`).attr('src', '../images/o.png');
-        playerO.suqaresControlled.push(currentSquareId);
-        if (checkWin(playerO.suqaresControlled))
-            playerO.win();
+    // Add the square id to the controlled squares of the player that chose it.
+    playerX.suqaresControlled.push(currentSquareId);
+
+    // Check the player's controlled squares for win condition.
+    if (checkWin(playerX.suqaresControlled))
+        playerX.win(); // call win method to increase player score
+    else {
+
     }
 };
 
