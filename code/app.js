@@ -1,14 +1,14 @@
 // Object that will be used for representing players of the game.
 // Where there're 3 varibales to keep count of the players' wins, ties, and losses.
-// The isPlaying variable is true when it's the players turn to play and 
+// The isPlaying key-value pair is true when it's the players turn to play and 
 //  it's false otherwise.
 const makePlayer = function () {
     let winCount = 0;
     let tieCount = 0;
     let lossCount = 0;
-    let isPlaying = false;
 
     return {
+        isPlaying: false,
         win: function () {
             winCount += 1;
             return winCount;
@@ -21,9 +21,11 @@ const makePlayer = function () {
             lossCount += 1;
             return lossCount;
         },
-        switchTurn: function () {
-            isPlaying = !isPlaying;
-            return isPlaying;
+        play: function () {
+            this.isPlaying = true;
+        },
+        wait: function () {
+            this.isPlaying = false;
         },
         getScore: function () {
             return {
