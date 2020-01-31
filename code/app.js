@@ -89,13 +89,43 @@ const updateTurnHeader = function () {
         turnHeader.text('Player O');
 };
 
-// 
+// Function responsible to see if a winning condition is met.
+// It works by checking if any of the winning cases are achived with the collection of squares.
+// Example of winning combinations: [square1,square2,square3] which are the 3 suqares in the first row.
+const checkWin = function () {
+
+};
+
+// Callback function that gets called when a square is clicked by a player.
+const suqareClicked = function () {
+    // Put the element clicked into a variable.
+    const currentSquare = $(this);
+
+    // Add the square id to the controlled squares of the player that chose it.
+    // check the player's controlled squares for win condition.
+    if (playerX.isPlaying) {
+        playerX.suqaresControlled.push(currentSquare);
+        checkWin(playerX.suqaresControlled);
+    } else {
+
+    }
+};
 
 // Function to start the game initially.
 const startGame = function () {
 
     coinToss();
     updateTurnHeader();
+
+    // Register click events for all buttons on the board
+    const gameBoard = $('.game-board button');
+    for (let i = 0; i < gameBoard.length; i++) {
+        gameBoard[i].click(suqareClicked);
+    }
+
+    // while (true) {
+
+    // }
 };
 
 // Calling the function to start the game when the script is loaded.
