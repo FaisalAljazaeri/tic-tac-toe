@@ -20,6 +20,10 @@ const makePlayer = function () {
         lose: function () {
             lossCount += 1;
             return lossCount;
+        },
+        switchTurn: function () {
+            isPlaying = !isPlaying;
+            return isPlaying;
         }
     };
 };
