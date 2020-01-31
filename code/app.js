@@ -24,6 +24,13 @@ const makePlayer = function () {
         switchTurn: function () {
             isPlaying = !isPlaying;
             return isPlaying;
+        },
+        getScore: function () {
+            return {
+                wins: winCount,
+                ties: tieCount,
+                losses: lossCount
+            };
         }
     };
 };
