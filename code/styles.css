@@ -26,7 +26,7 @@
     padding: 0;
 }
 
-button:hover {
+.hover-effect:hover {
     border: 2px solid #2B98F4;
     cursor: pointer;
 }

@@ -127,6 +127,11 @@ const suqareClicked = function () {
     // Put the ID of the element clicked into a variable.
     const squareId = $(this).attr('id');
 
+    // Disable the square clicked, so it can't be clicked multiple times
+    // Also, remove .hover-effect class so it's visually obvious that it's disabled
+    $(this).attr('disabled', 'true');
+    $(this).removeClass('hover-effect');
+
     // pass the current player to the execute function
     if (playerX.isPlaying)
         executeTurn(playerX, squareId);
