@@ -43,6 +43,8 @@ const makePlayer = function (playerName, imgSrc) {
 };
 
 // Create and save player objects in seperate variables
+// The first passed parameter represents the name of the player.
+// The second passed parameter represents the src for the img used for either (X or O).
 const playerX = makePlayer('Player X', '../images/x.png');
 const playerO = makePlayer('Player O', '../images/o.png');
 
@@ -135,15 +137,15 @@ const suqareClicked = function () {
 
     // pass the current player to the execute function
     if (playerX.isPlaying)
-        executeTurn(playerX, squareId);
+        executeTurn(playerX, 1, squareId);
     else
-        executeTurn(playerO, squareId);
+        executeTurn(playerO, 2, squareId);
 };
 
 // Function responsible for executing a player's turn
 // Takes the player that's playing, and the ID of the suqare they chose 
 // as parameters and execute necessary steps based on the choice.
-const executeTurn = function (player, squareId) {
+const executeTurn = function (player, playerId, squareId) {
     // Chnage the img of the square based on the player the clicked it.
     $(`#${squareId} img`).attr('src', player.imgSrc);
 
@@ -152,8 +154,11 @@ const executeTurn = function (player, squareId) {
 
     // Check the player's controlled squares for win condition.
     if (checkWin(player.suqaresControlled)) {
-        console.log(player, ' wins');
-        player.win(); // call win method to increase player score
+        const winsSpan = $(`#wins-${playerId}`);
+
+        // call win method to increase player score and update UI to show count
+        winsSpan.text(player.win());
+
     } else {
         endTurn();
     }
