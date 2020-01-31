@@ -4,12 +4,13 @@
 //  it's false otherwise.
 // The squaresControlled array will hold the IDs for the squares that the player clicked.
 // The squaresControlled will be used to determine win cases.
-const makePlayer = function (imgSrc) {
+const makePlayer = function (playerName, imgSrc) {
     let winCount = 0;
     let tieCount = 0;
     let lossCount = 0;
 
     return {
+        playerName: playerName,
         isPlaying: false,
         suqaresControlled: [],
         imgSrc: imgSrc,
@@ -42,8 +43,8 @@ const makePlayer = function (imgSrc) {
 };
 
 // Create and save player objects in seperate variables
-const playerX = makePlayer('../images/x.png');
-const playerO = makePlayer('../images/o.png');
+const playerX = makePlayer('Player X', '../images/x.png');
+const playerO = makePlayer('Player O', '../images/o.png');
 
 // Function that will run everytime the game starts.
 // It's responsible for randomly deciding which player will start the game
