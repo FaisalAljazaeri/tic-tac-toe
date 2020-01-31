@@ -4,12 +4,13 @@
 //  it's false otherwise.
 // The squaresControlled array will hold the IDs for the squares that the player clicked.
 // The squaresControlled will be used to determine win cases.
-const makePlayer = function (playerName, imgSrc) {
+const makePlayer = function (id, playerName, imgSrc) {
     let winCount = 0;
     let tieCount = 0;
     let lossCount = 0;
 
     return {
+        playerId: id,
         playerName: playerName,
         isPlaying: false,
         suqaresControlled: [],
@@ -45,8 +46,8 @@ const makePlayer = function (playerName, imgSrc) {
 // Create and save player objects in seperate variables
 // The first passed parameter represents the name of the player.
 // The second passed parameter represents the src for the img used for either (X or O).
-const playerX = makePlayer('Player X', '../images/x.png');
-const playerO = makePlayer('Player O', '../images/o.png');
+const playerX = makePlayer(1, 'Player X', '../images/x.png');
+const playerO = makePlayer(2, 'Player O', '../images/o.png');
 
 // Function that will run everytime the game starts.
 // It's responsible for randomly deciding which player will start the game
@@ -142,15 +143,15 @@ const suqareClicked = function () {
 
     // pass the current player to the execute function
     if (playerX.isPlaying)
-        executeTurn(playerX, 1, squareId);
+        executeTurn(playerX, playerO, squareId);
     else
-        executeTurn(playerO, 2, squareId);
+        executeTurn(playerO, playerX, squareId);
 };
 
 // Function responsible for executing a player's turn
 // Takes the player that's playing, and the ID of the suqare they chose 
 // as parameters and execute necessary steps based on the choice.
-const executeTurn = function (player, playerId, squareId) {
+const executeTurn = function (player, opponent, squareId) {
     // Chnage the img of the square based on the player the clicked it.
     $(`#${squareId} img`).attr('src', player.imgSrc);
 
@@ -159,10 +160,14 @@ const executeTurn = function (player, playerId, squareId) {
 
     // Check the player's controlled squares for win condition.
     if (checkWin(player.suqaresControlled)) {
-        const winsSpan = $(`#wins-${playerId}`);
+        const winsSpan = $(`#wins-${player.playerId}`);
+        const lossesSpan = $(`#losses-${opponent.playerId}`);
 
-        // call win method to increase player score and update UI to show count
+        // call win method to increase player win score and update UI to show count
         winsSpan.text(player.win());
+
+        // call the opponent's loss method to increase loss counter and show it on UI.
+        lossesSpan.text(opponent.lose());
 
     } else {
         endTurn();
