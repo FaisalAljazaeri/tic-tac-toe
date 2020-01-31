@@ -104,8 +104,8 @@ const checkWin = function (squaresControlled) {
             // Variable will be true if all three elements of the win combination array
             // are present in the squaresControlled array.
             if (squaresControlled.includes(currentCombination[0]) &&
-                squaresControlled.includes(currentCombination[0]) &&
-                squaresControlled.includes(currentCombination[0])) {
+                squaresControlled.includes(currentCombination[1]) &&
+                squaresControlled.includes(currentCombination[2])) {
 
                 return true;
             }
@@ -118,8 +118,13 @@ const checkWin = function (squaresControlled) {
 // Function to handle switching player turns
 const endTurn = function () {
     // Switch the active player
-    playerX.isPlaying = !playerX.isPlaying;
-    playerO.isPlaying = !playerO.isPlaying;
+    if (playerX.isPlaying) {
+        playerX.wait();
+        playerO.play();
+    } else {
+        playerO.wait();
+        playerX.play();
+    }
 
     // Update the header to view current player
     updateTurnHeader();
