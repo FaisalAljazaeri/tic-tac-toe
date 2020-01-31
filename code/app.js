@@ -96,16 +96,16 @@ const checkWin = function (squaresControlled) {
         // Iterate over the winCombinations array and check if the controlled array
         // contains a winning combination.
         for (let i = 0; i < winCombinations.length; i++) {
-            const currentElement = winCombinations[i];
+            const currentCombination = winCombinations[i];
 
             // Variable will be true if all three elements of the win combination array
             // are present in the squaresControlled array.
-            const isWin = currentElement.every(el => {
-                squaresControlled.indexOf(el);
-            });
+            if (squaresControlled.includes(currentCombination[0]) &&
+                squaresControlled.includes(currentCombination[0]) &&
+                squaresControlled.includes(currentCombination[0])) {
 
-            if (isWin)
                 return true;
+            }
         }
     }
 
@@ -145,9 +145,10 @@ const executeTurn = function (player, squareId) {
     player.suqaresControlled.push(squareId);
 
     // Check the player's controlled squares for win condition.
-    if (checkWin(player.suqaresControlled))
+    if (checkWin(player.suqaresControlled)) {
+        console.log(player, ' wins');
         player.win(); // call win method to increase player score
-    else {
+    } else {
         endTurn();
     }
 };
