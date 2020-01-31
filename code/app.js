@@ -59,9 +59,23 @@ const coinToss = function () {
     }
 };
 
+// Function responsible to change the HTML header to display the name of the current player.
+const updateTurnHeader = function () {
+    const turnHeader = $('#current');
+
+    if (playerX.isPlaying)
+        turnHeader.text('Player X');
+    else
+        turnHeader.text('Player O');
+};
+
 // Function to start the game initially.
 // It's only called once when the script runs for the first time 
 const startGame = function () {
 
     coinToss();
+    updateTurnHeader();
 };
+
+// Calling the function to start the game when the script is loaded.
+startGame();
