@@ -175,6 +175,29 @@ const startGame = function () {
     for (let i = 0; i < gameBoard.length; i++) {
         $(gameBoard[i]).click(suqareClicked);
     }
+
+    // Register click event for the restart game button
+    $('#restart-btn').click(resetartGame);
+};
+
+// Function to restart game without refreshing the browser.
+// It's called when the 'restart' button is clicked
+const resetartGame = function () {
+    const gameBoard = $('.game-board button');
+
+    // Reset the Images of the squares and enable any disabled button
+    for (let i = 0; i < gameBoard.length; i++) {
+        $(`#${gameBoard[i].id} img`).attr('src', '');
+        $(gameBoard[i]).removeAttr('disabled');
+        $(gameBoard[i]).addClass('hover-effect');
+    }
+
+    coinToss();
+    updateTurnHeader();
+
+    // Clear both players controlled squares
+    playerO.suqaresControlled = [];
+    playerX.suqaresControlled = [];
 };
 
 // Calling the function to start the game when the script is loaded.
