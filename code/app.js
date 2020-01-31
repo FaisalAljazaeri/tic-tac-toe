@@ -101,7 +101,7 @@ const checkWin = function (squaresControlled) {
             // Variable will be true if all three elements of the win combination array
             // are present in the squaresControlled array.
             const isWin = currentElement.every(el => {
-                squaresControlled.indexOf(el) !== -1;
+                squaresControlled.indexOf(el);
             });
 
             if (isWin)
@@ -127,9 +127,6 @@ const suqareClicked = function () {
     // Put the ID of the element clicked into a variable.
     const squareId = $(this).attr('id');
 
-    // Disable the button, so it can't be clicked multiple times
-    $(this).attr('disabled', 'true');
-
     // pass the current player to the execute function
     if (playerX.isPlaying)
         executeTurn(playerX, squareId);
@@ -148,10 +145,9 @@ const executeTurn = function (player, squareId) {
     player.suqaresControlled.push(squareId);
 
     // Check the player's controlled squares for win condition.
-    if (checkWin(player.suqaresControlled)) {
-        console.log(player, ' WINS!!!');
+    if (checkWin(player.suqaresControlled))
         player.win(); // call win method to increase player score
-    } else {
+    else {
         endTurn();
     }
 };
