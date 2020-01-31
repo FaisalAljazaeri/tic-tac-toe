@@ -39,3 +39,7 @@ button img {
     height: inherit;
     width: 100%;
 }
+
+#current {
+    color: #2CC135;
+}
