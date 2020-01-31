@@ -89,10 +89,22 @@ const updateTurnHeader = function () {
         turnHeader.text('Player O');
 };
 
+// Array that holds the arrays that reperesent the squares of winning combinations.
+const winCombinations = [
+    ['btn-1', 'btn-2', 'btn-3'], // first row
+    ['btn-4', 'btn-5', 'btn-6'], // second row
+    ['btn-7', 'btn-8', 'btn-9'], // third row
+    ['btn-1', 'btn-4', 'btn-7'], // first column
+    ['btn-2', 'btn-5', 'btn-8'], // second column
+    ['btn-3', 'btn-6', 'btn-9'], // third column
+    ['btn-1', 'btn-5', 'btn-9'], // top-left to bottom-right diagonally
+    ['btn-3', 'btn-5', 'btn-7'], // top-right to botton-left diagonally
+];
+
 // Function responsible to see if a winning condition is met.
 // It works by checking if any of the winning cases are achived with the collection of squares.
 // Example of winning combinations: [square1,square2,square3] which are the 3 suqares in the first row.
-const checkWin = function () {
+const checkWin = function (squaresControlled) {
 
 };
 
@@ -104,7 +116,7 @@ const suqareClicked = function () {
     // Add the square id to the controlled squares of the player that chose it.
     // check the player's controlled squares for win condition.
     if (playerX.isPlaying) {
-        playerX.suqaresControlled.push(currentSquare);
+        playerX.suqaresControlled.push(currentSquare.id);
         checkWin(playerX.suqaresControlled);
     } else {
 
