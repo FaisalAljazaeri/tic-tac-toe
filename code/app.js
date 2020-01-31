@@ -36,3 +36,8 @@ const makePlayer = function () {
         }
     };
 };
+
+// Create and save player objects in seperate variables
+const playerX = makePlayer();
+const playerO = makePlayer();
+
