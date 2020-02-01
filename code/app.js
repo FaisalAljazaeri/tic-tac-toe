@@ -116,6 +116,36 @@ const checkWin = function (squaresControlled) {
     return false;
 };
 
+// Check the case of a draw and returns true or false
+const checkDraw = function () {
+
+    // First, figure all the controlled squares on the board
+    const allControlledSquares = playerX.suqaresControlled + playerO.suqaresControlled;
+
+    // Since we entred this function we are sure that no player has won yet.
+    // we need to check if all win combinations are included in the controlled squares,
+    // to determine if we should end the game as draw, since all win cases are taken.
+    for (let i = 0; i < winCombinations.length; i++) {
+        const currentCombination = winCombinations[i];
+
+        // if at least one combination is still not taken we exit the loop,
+        // and return false since there is still possibility of a winner
+        const includesAll = allControlledSquares.includes(
+            currentCombination[0],
+            currentCombination[1],
+            currentCombination[2]
+        );
+
+        // If not all elemnts of the current combinations is included then
+        // there's possibility of a winner, so we return false for draw.
+        if (!includesAll)
+            return false;
+    }
+
+    return true;
+};
+
+
 // Function to handle switching player turns
 const endTurn = function () {
     // Switch the active player
@@ -169,6 +199,8 @@ const executeTurn = function (player, opponent, squareId) {
         // call the opponent's loss method to increase loss counter and show it on UI.
         lossesSpan.text(opponent.lose());
 
+    } else if (checkDraw()) {
+        console.log('DRAW!!!');
     } else {
         endTurn();
     }
