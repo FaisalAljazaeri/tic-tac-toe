@@ -120,7 +120,7 @@ const checkWin = function (squaresControlled) {
 const checkDraw = function () {
 
     // First, figure all the controlled squares on the board
-    const allControlledSquares = playerX.suqaresControlled + playerO.suqaresControlled;
+    const allControlledSquares = playerX.suqaresControlled.concat(playerO.suqaresControlled);
 
     // Since we entred this function we are sure that no player has won yet.
     // we need to check if all win combinations are included in the controlled squares,
@@ -130,11 +130,10 @@ const checkDraw = function () {
 
         // if at least one combination is still not taken we exit the loop,
         // and return false since there is still possibility of a winner
-        const includesAll = allControlledSquares.includes(
-            currentCombination[0],
-            currentCombination[1],
-            currentCombination[2]
-        );
+        const includesAll =
+            allControlledSquares.includes(currentCombination[0]) &&
+            allControlledSquares.includes(currentCombination[1]) &&
+            allControlledSquares.includes(currentCombination[2]);
 
         // If not all elemnts of the current combinations is included then
         // there's possibility of a winner, so we return false for draw.
@@ -200,7 +199,15 @@ const executeTurn = function (player, opponent, squareId) {
         lossesSpan.text(opponent.lose());
 
     } else if (checkDraw()) {
-        console.log('DRAW!!!');
+        // case of draw increase both players draw counter
+        // and change to UI to show the new counts
+
+        const tiesSpanX = $(`#ties-${playerX.playerId}`);
+        const tiesSpanO = $(`#ties-${playerO.playerId}`);
+
+        tiesSpanX.text(playerX.tie());
+        tiesSpanO.text(playerO.tie());
+
     } else {
         endTurn();
     }
