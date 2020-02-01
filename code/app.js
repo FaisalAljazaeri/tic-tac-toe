@@ -160,6 +160,13 @@ const endTurn = function () {
     updateTurnHeader();
 };
 
+// Function to end the game in case of win or draw.
+// It's responsible for stopping user input until a new game is started.
+const endGame = function () {
+    // disable all the buttons on the game board.
+    $('.game-board button').attr('disabled', 'true').removeClass('hover-effect');
+};
+
 // Callback function that gets called when a square is clicked by a player.
 const suqareClicked = function () {
     // Put the ID of the element clicked into a variable.
@@ -198,6 +205,9 @@ const executeTurn = function (player, opponent, squareId) {
         // call the opponent's loss method to increase loss counter and show it on UI.
         lossesSpan.text(opponent.lose());
 
+        // Call endGame function to stop the current game
+        endGame();
+
     } else if (checkDraw()) {
         // case of draw increase both players draw counter
         // and change to UI to show the new counts
@@ -208,7 +218,11 @@ const executeTurn = function (player, opponent, squareId) {
         tiesSpanX.text(playerX.tie());
         tiesSpanO.text(playerO.tie());
 
+        // Call endGame function to stop the current game.
+        endGame();
+
     } else {
+        // start the next turn.
         endTurn();
     }
 };
