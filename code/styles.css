@@ -1,10 +1,16 @@
+body {
+    background-color: #003366;
+    text-shadow: 2px 2px #000;
+    color: white;
+}
+
 .container {
     margin: 0 auto;
     text-align: center;
 }
 
 .game {
-    margin: 50px auto;
+    margin: 30px auto;
     display: flex;
     justify-content: center;
 }
@@ -24,11 +30,17 @@
     width: 33%;
     height: 130px;
     padding: 0;
+    background-color: inherit;
+    border: 3px solid #FFF;
 }
 
 .hover-effect:hover {
-    border: 2px solid #2B98F4;
+    background-color: #0073e6;
     cursor: pointer;
+}
+
+.clicked {
+    background-color: #0073e6 !important;
 }
 
 li {
@@ -42,4 +54,11 @@ button img {
 
 #current {
     color: #2CC135;
+}
+
+#restart-btn {
+    margin: 10px auto;
+    height: 40px;
+    width: 140px;
+    cursor: pointer;
 }

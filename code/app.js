@@ -198,6 +198,7 @@ const suqareClicked = function () {
     // Also, remove .hover-effect class so it's visually obvious that it's disabled
     $(this).attr('disabled', 'true');
     $(this).removeClass('hover-effect');
+    $(this).addClass('clicked');
 
     // pass the current player to the execute function
     if (playerX.isPlaying)
@@ -275,6 +276,7 @@ const resetartGame = function () {
         $(`#${gameBoard[i].id} img`).attr('src', '');
         $(gameBoard[i]).removeAttr('disabled');
         $(gameBoard[i]).addClass('hover-effect');
+        $(gameBoard[i]).removeClass('clicked');
     }
 
     coinToss();
