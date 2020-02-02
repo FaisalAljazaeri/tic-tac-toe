@@ -116,6 +116,28 @@ const checkWin = function (squaresControlled) {
     return false;
 };
 
+const aPlayerHasChance = function (combination) {
+    // Retreiving the sets of squares controlled by each player,
+    // to compare it with the wining combination
+    const playersSquares = [playerX.suqaresControlled, playerO.suqaresControlled];
+    const matches = [0, 0];
+
+    for (let i = 0; i < playersSquares.length; i++) {
+
+        for (let j = 0; j < playersSquares[i].length; j++) {
+            const currentCombinationElement = combination[j];
+
+            if (playersSquares[i].includes(currentCombinationElement))
+                matches[i]++;
+        }
+    }
+
+    if (matches[0] === 1 && matches[1] === 1)
+        return false;
+    else
+        return true;
+};
+
 // Check the case of a draw and returns true or false
 const checkDraw = function () {
 
@@ -137,7 +159,7 @@ const checkDraw = function () {
 
         // If not all elemnts of the current combinations is included then
         // there's possibility of a winner, so we return false for draw.
-        if (!includesAll)
+        if (!includesAll && aPlayerHasChance(currentCombination))
             return false;
     }
 
