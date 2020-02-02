@@ -2,6 +2,7 @@ body {
     background-color: #003366;
     text-shadow: 2px 2px #000;
     color: white;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 .container {
@@ -16,14 +17,14 @@ body {
 }
 
 .game-board {
-    width: 50%;
+    width: 33%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .player {
-    width: 25%;
+    width: 33%;
 }
 
 .game button {
@@ -44,8 +45,12 @@ body {
 }
 
 li {
+    list-style: none;
     text-align: left;
+    font-size: 18px;
+    margin: 5% 35%;
 }
+
 
 button img {
     height: inherit;
@@ -60,5 +65,15 @@ button img {
     margin: 10px auto;
     height: 40px;
     width: 140px;
+    background-color: #003366;
     cursor: pointer;
+    color: inherit;
+    text-shadow: inherit;
+    font-size: 18px;
+    font-family: inherit;
+    border: 2px solid #FFF;
+}
+
+#restart-btn:hover {
+    background-color: #0073e6;
 }
