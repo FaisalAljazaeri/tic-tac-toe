@@ -1,7 +1,4 @@
 body {
-    background-color: #003366;
-    text-shadow: 2px 2px #000;
-    color: white;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
@@ -31,17 +28,17 @@ body {
     width: 33%;
     height: 130px;
     padding: 0;
-    background-color: inherit;
+    background-color: #6d0f0f;
     border: 3px solid #FFF;
 }
 
 .hover-effect:hover {
-    background-color: #0073e6;
+    background-color: #e70e0e;
     cursor: pointer;
 }
 
 .clicked {
-    background-color: #0073e6 !important;
+    background-color: #e70e0e !important;
 }
 
 li {
@@ -65,17 +62,16 @@ button img {
     margin: 10px auto;
     height: 40px;
     width: 140px;
-    background-color: #003366;
+    background-color: #155a07;
     cursor: pointer;
-    color: inherit;
-    text-shadow: inherit;
+    color: white;
     font-size: 18px;
     font-family: inherit;
     border: 2px solid #FFF;
 }
 
 #restart-btn:hover {
-    background-color: #0073e6;
+    background-color: #21d121;
 }
 
 @media (max-width:900px) {
@@ -93,10 +89,12 @@ button img {
     .game-board {
         width: 90%;
     }
+
     .player {
         width: 50%;
         order: -1;
     }
+
     .game {
         flex-wrap: wrap;
     }
