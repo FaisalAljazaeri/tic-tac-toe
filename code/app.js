@@ -108,6 +108,11 @@ const checkWin = function (squaresControlled) {
                 squaresControlled.includes(currentCombination[1]) &&
                 squaresControlled.includes(currentCombination[2])) {
 
+                // change the bacground of winning buttons to green
+                currentCombination.forEach(el => {
+                    $(`#${el}`).addClass('green');
+                });
+
                 return true;
             }
         }
@@ -277,6 +282,7 @@ const resetartGame = function () {
         $(gameBoard[i]).removeAttr('disabled');
         $(gameBoard[i]).addClass('hover-effect');
         $(gameBoard[i]).removeClass('clicked');
+        $(gameBoard[i]).removeClass('green');
     }
 
     coinToss();

@@ -37,8 +37,8 @@ body {
     cursor: pointer;
 }
 
-.clicked {
-    background-color: #e70e0e !important;
+.game button.clicked {
+    background-color: #e70e0e;
 }
 
 li {
@@ -48,6 +48,9 @@ li {
     margin: 5% 35%;
 }
 
+.game-board button.green {
+    background-color: green;
+}
 
 button img {
     height: inherit;
