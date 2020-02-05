@@ -1,20 +1,23 @@
-// Object that will be used for representing players of the game.
-// Where there're 3 varibales to keep count of the players' wins, ties, and losses.
-// The isPlaying key-value pair is true when it's the players turn to play and 
-//  it's false otherwise.
-// The squaresControlled array will hold the IDs for the squares that the player clicked.
-// The squaresControlled will be used to determine win cases.
-const makePlayer = function (id, playerName, imgSrc) {
+let socket = io();
+
+// Register listnenrs for all buttons
+let gameButtons = $('.game-board button');
+gameButtons.attr('disabled', 'true');
+
+// Select the div where chat messages will be displayed
+// To later apply some functions on it.
+const messageBody = document.querySelector('.chat-box');
+
+// Function that will be used to initalize player objects
+const makePlayer = function (id) {
     let winCount = 0;
     let tieCount = 0;
     let lossCount = 0;
 
     return {
         playerId: id,
-        playerName: playerName,
-        isPlaying: false,
+        turn: false,
         suqaresControlled: [],
-        imgSrc: imgSrc,
         win: function () {
             winCount += 1;
             return winCount;
@@ -26,57 +29,55 @@ const makePlayer = function (id, playerName, imgSrc) {
         lose: function () {
             lossCount += 1;
             return lossCount;
-        },
-        play: function () {
-            this.isPlaying = true;
-        },
-        wait: function () {
-            this.isPlaying = false;
-        },
-        getScore: function () {
-            return {
-                wins: winCount,
-                ties: tieCount,
-                losses: lossCount
-            };
         }
     };
 };
 
-// Create and save player objects in seperate variables
-// The first passed parameter represents the name of the player.
-// The second passed parameter represents the src for the img used for either (X or O).
-const playerX = makePlayer(1, 'Player X', '../images/x.png');
-const playerO = makePlayer(2, 'Player O', '../images/o.png');
+// create player objects 
+const player = makePlayer(1);
+const opponent = makePlayer(2);
 
-// Function that will run everytime the game starts.
-// It's responsible for randomly deciding which player will start the game
-const coinToss = function () {
+// All the squares controlled on the board (by player and opponent)
+let allControlledSquares = [];
 
-    // generating a random whole number between 1 and 2.
-    // if it's 1 => playerX goes first.
-    // if it's 2 => playerO goes first.
-    const random = Math.floor(Math.random() * 2) + 1;
-
-    if (random === 1) {
-        playerX.play();
-        playerO.wait();
-    } else {
-        playerO.play();
-        playerX.wait();
+const startGame = function () {
+    // Register click events for all buttons on the board
+    for (let i = 0; i < gameButtons.length; i++) {
+        $(gameButtons[i]).click(suqareClicked);
     }
 };
 
-// Function responsible to change the HTML header to display the name of the current player.
-const updateTurnHeader = function () {
-    const turnHeader = $('#current');
+const resetartGame = function () {
+    // Reset the Images of the squares and enable any disabled button
+    // and clear effects on any of the clicked buttons to return the game
+    // to its starting state.
+    for (let i = 0; i < gameButtons.length; i++) {
+        $(gameButtons[i]).click(suqareClicked);
+        $(`#${gameButtons[i].id} img`).attr('src', '');
+        $(gameButtons[i]).addClass('hover-effect');
+        $(gameButtons[i]).removeClass('clicked');
+        $(gameButtons[i]).removeClass('green');
+    }
+    gameButtons.attr('disabled', 'true');
 
-    if (playerX.isPlaying)
-        turnHeader.text('Player X');
-    else
-        turnHeader.text('Player O');
+    if (player.turn) {
+        gameButtons.removeAttr('disabled');
+    }
+
+    // Clear both players controlled squares and the board squares
+    // to mark the start of a new game
+    allControlledSquares = [];
+    player.suqaresControlled = [];
+    opponent.suqaresControlled = [];
+
+    // communicate to the other client to restart their game
+    socket.emit('reset');
 };
 
+// saved image srcs for X and O symbols
+const imgSrcs = ['/images/x.png', '/images/o.png'];
+
+// All winning combinations
 // Array that holds the arrays that reperesent the squares of winning combinations.
 const winCombinations = [
     ['btn-1', 'btn-2', 'btn-3'], // first row
@@ -88,6 +89,14 @@ const winCombinations = [
     ['btn-1', 'btn-5', 'btn-9'], // top-left to bottom-right diagonally
     ['btn-3', 'btn-5', 'btn-7'], // top-right to botton-left diagonally
 ];
+
+// Function to end the game (it's called when a draw or win occurs)
+// It's responsible for stopping user input until a new game is started.
+const endGame = function () {
+    // disable all the buttons on the game board.
+    gameButtons.off();
+    $('.game-board button').attr('disabled', 'true').removeClass('hover-effect');
+};
 
 // Function responsible to see if a winning condition is met.
 // It works by checking if any of the winning cases are achived with the collection of squares.
@@ -121,33 +130,10 @@ const checkWin = function (squaresControlled) {
     return false;
 };
 
-const aPlayerHasChance = function (combination) {
-    // Retreiving the sets of squares controlled by each player,
-    // to compare it with the wining combination
-    const playersSquares = [playerX.suqaresControlled, playerO.suqaresControlled];
-    const matches = [0, 0];
-
-    for (let i = 0; i < playersSquares.length; i++) {
-
-        for (let j = 0; j < playersSquares[i].length; j++) {
-            const currentCombinationElement = combination[j];
-
-            if (playersSquares[i].includes(currentCombinationElement))
-                matches[i]++;
-        }
-    }
-
-    if (matches[0] === 1 && matches[1] === 1)
-        return false;
-    else
-        return true;
-};
-
 // Check the case of a draw and returns true or false
 const checkDraw = function () {
-
     // First, figure all the controlled squares on the board
-    const allControlledSquares = playerX.suqaresControlled.concat(playerO.suqaresControlled);
+    const allControlledSquares = player.suqaresControlled.concat(opponent.suqaresControlled);
 
     // Since we entred this function we are sure that no player has won yet.
     // we need to check if all win combinations are included in the controlled squares,
@@ -162,136 +148,189 @@ const checkDraw = function () {
             allControlledSquares.includes(currentCombination[1]) &&
             allControlledSquares.includes(currentCombination[2]);
 
-        // If not all elemnts of the current combinations is included then
+        // If not all elemnets of the current combinations are included then
         // there's possibility of a winner, so we return false for draw.
         if (!includesAll && aPlayerHasChance(currentCombination))
             return false;
     }
-
     return true;
 };
 
+const aPlayerHasChance = function (combination) {
+    // Retreiving the sets of squares controlled by each player,
+    // to compare it with the wining combination
+    const playersSquares = [player.suqaresControlled, opponent.suqaresControlled];
+    const matches = [0, 0];
 
-// Function to handle switching player turns
-const endTurn = function () {
-    // Switch the active player
-    if (playerX.isPlaying) {
-        playerX.wait();
-        playerO.play();
-    } else {
-        playerO.wait();
-        playerX.play();
+    for (let i = 0; i < playersSquares.length; i++) {
+        for (let j = 0; j < playersSquares[i].length; j++) {
+            const currentCombinationElement = combination[j];
+
+            if (playersSquares[i].includes(currentCombinationElement))
+                matches[i]++;
+        }
     }
 
-    // Update the header to view current player
-    updateTurnHeader();
+    // if the different players contorol two different squares in a combination
+    // then it's a draw by default without considering the 3rd empty square
+    if (matches[0] === 1 && matches[1] === 1)
+        return false;
+    else
+        return true;
 };
 
-// Function to end the game in case of win or draw.
-// It's responsible for stopping user input until a new game is started.
-const endGame = function () {
-    // disable all the buttons on the game board.
-    $('.game-board button').attr('disabled', 'true').removeClass('hover-effect');
-};
 
-// Callback function that gets called when a square is clicked by a player.
+// Button click callback function
 const suqareClicked = function () {
-    // Put the ID of the element clicked into a variable.
-    const squareId = $(this).attr('id');
+    // push the cliked square id to the global array that keeps track of board buttons
+    allControlledSquares.push(this.id);
+    // communicate to the opponent socket to disable the button pressed
+    // and reflect necessary changes
+    socket.emit('btn', this.id);
 
-    // Disable the square clicked, so it can't be clicked multiple times
-    // Also, remove .hover-effect class so it's visually obvious that it's disabled
-    $(this).attr('disabled', 'true');
+    // unregister listenr for clicked button and change style.
+    $(this).off();
     $(this).removeClass('hover-effect');
     $(this).addClass('clicked');
 
-    // pass the current player to the execute function
-    if (playerX.isPlaying)
-        executeTurn(playerX, playerO, squareId);
-    else
-        executeTurn(playerO, playerX, squareId);
-};
+    // check win condition for the opponent or the player depending on whose playing.
+    if (player.turn) {
+        $(`#${this.id} img`).attr('src', player.img);
+        player.suqaresControlled.push(this.id);
 
-// Function responsible for executing a player's turn
-// Takes the player that's playing, and the ID of the suqare they chose 
-// as parameters and execute necessary steps based on the choice.
-const executeTurn = function (player, opponent, squareId) {
-    // Chnage the img of the square based on the player the clicked it.
-    $(`#${squareId} img`).attr('src', player.imgSrc);
+        if (checkWin(player.suqaresControlled)) {
+            const winsSpan = $(`#wins`);
+            // call win method to increase player win score and update UI to show count
+            winsSpan.text(player.win());
 
-    // Add the square id to the controlled squares of the player that chose it.
-    player.suqaresControlled.push(squareId);
+            // Call endGame function to stop the current game
+            endGame();
+        }
 
-    // Check the player's controlled squares for win condition.
-    if (checkWin(player.suqaresControlled)) {
-        const winsSpan = $(`#wins-${player.playerId}`);
-        const lossesSpan = $(`#losses-${opponent.playerId}`);
+    } else {
+        $(`#${this.id} img`).attr('src', opponent.img);
+        opponent.suqaresControlled.push(this.id);
 
-        // call win method to increase player win score and update UI to show count
-        winsSpan.text(player.win());
+        if (checkWin(opponent.suqaresControlled)) {
+            const lossesSpan = $(`#losses`);
+            lossesSpan.text(player.lose());
 
-        // call the opponent's loss method to increase loss counter and show it on UI.
-        lossesSpan.text(opponent.lose());
+            // Call endGame function to stop the current game
+            endGame();
+        }
+    }
 
-        // Call endGame function to stop the current game
-        endGame();
-
-    } else if (checkDraw()) {
-        // case of draw increase both players draw counter
-        // and change to UI to show the new counts
-
-        const tiesSpanX = $(`#ties-${playerX.playerId}`);
-        const tiesSpanO = $(`#ties-${playerO.playerId}`);
-
-        tiesSpanX.text(playerX.tie());
-        tiesSpanO.text(playerO.tie());
+    if (checkDraw()) {
+        // case of draw increase player's draw counter and change the UI to show it.
+        const tiesSpan = $(`#ties`);
+        tiesSpan.text(player.tie());
 
         // Call endGame function to stop the current game.
         endGame();
-
     } else {
-        // start the next turn.
-        endTurn();
+        // The current turn didn't result in a win or draw,
+        // so start the next turn.
+        switchTurn();
+    }
+}
+
+// Header to show the player currently playing
+const currentPlayerHeader = $('#current');
+// Function to display indication of who's turn is it on the client's UI.
+const onDisplayTurn = function () {
+    if (player.turn) {
+        currentPlayerHeader.text('You');
+    } else {
+        currentPlayerHeader.text('Opponent');
+    }
+}
+
+// Callback function for the chat event.
+// it's triggred if a message is sent on the chat and it holds the msg sent.
+const onChat = function (msg) {
+
+    // create a new paragraph with the passed msg and append it to the chat div
+    let chatBox = $('.chat-box');
+    let newP = $('<p>').text(msg);
+    chatBox.append(newP);
+
+    // Scroll to the bottom of the chat box
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+}
+
+// Triggred in the case of submit event on the chat form.
+const chatForm = $('#chat-form');
+chatForm.submit(function (e) {
+
+    // get the current message and send end to the other client socket.
+    // and clear the message box
+    let chatInput = $('#chat-input');
+    let chatText = chatInput.val();
+    chatInput.val('');
+    socket.emit('chat', chatText);
+
+    // To stop the browser from loading the page on form submission 
+    e.preventDefault();
+});
+
+// Button click event handler on the opponent socket
+const onBtn = function (btnId) {
+    const btnClicked = $(`#${btnId}`);
+    btnClicked.click();
+};
+
+const switchTurn = function () {
+    // Trigger events on both player and opponent socket to switch turns 
+    // and display the results on the UI.
+
+    // Triggering player's socket events
+    socket.emit('turn');
+    socket.emit('displayTurn');
+
+    // Triggering opponent's socket events
+    socket.emit('sendTurn');
+    socket.emit('sendDisplayTurn');
+};
+
+// callback fucntion to switch turns and control who is able to play
+// by either disabling or enabling buttons depending on who is playing
+const onTurn = function () {
+    if (player.turn) {
+        player.turn = false;
+        gameButtons.attr('disabled', 'true');
+    } else {
+        player.turn = true;
+        gameButtons.removeAttr('disabled');
     }
 };
 
-// Function to start the game initially.
-const startGame = function () {
-
-    coinToss();
-    updateTurnHeader();
-
-    // Register click events for all buttons on the board
-    const gameBoard = $('.game-board button');
-    for (let i = 0; i < gameBoard.length; i++) {
-        $(gameBoard[i]).click(suqareClicked);
-    }
+// Function that is called by the server when two players are connected
+// it sets the turn for the firts player.
+const onPlayFirst = function () {
+    player.turn = true;
+    player.img = imgSrcs[0];
+    opponent.img = imgSrcs[1];
+    socket.emit('imgs');
+    gameButtons.removeAttr('disabled');
 
     // Register click event for the restart game button
     $('#restart-btn').click(resetartGame);
 };
 
-// Function to restart game without refreshing the browser.
-// It's called when the 'restart' button is clicked
-const resetartGame = function () {
-    const gameBoard = $('.game-board button');
-
-    // Reset the Images of the squares and enable any disabled button
-    for (let i = 0; i < gameBoard.length; i++) {
-        $(`#${gameBoard[i].id} img`).attr('src', '');
-        $(gameBoard[i]).removeAttr('disabled');
-        $(gameBoard[i]).addClass('hover-effect');
-        $(gameBoard[i]).removeClass('clicked');
-        $(gameBoard[i]).removeClass('green');
-    }
-
-    coinToss();
-    updateTurnHeader();
-
-    // Clear both players controlled squares
-    playerO.suqaresControlled = [];
-    playerX.suqaresControlled = [];
+// setting the imgs for X and O symbols for both players
+const setImgSrcs = function () {
+    player.img = imgSrcs[1];
+    opponent.img = imgSrcs[0];
 };
 
-// Calling the function to start the game when the script is loaded.
+// Registering required events on the client socket.
+socket.on('chat', onChat);
+socket.on('btn', onBtn);
+socket.on('turn', onTurn);
+socket.on('displayTurn', onDisplayTurn);
+socket.on('playFirst', onPlayFirst);
+socket.on('reset', resetartGame);
+socket.on('imgs', setImgSrcs);
+
+// Call to start the game as soon as the script is done loading.
 startGame();

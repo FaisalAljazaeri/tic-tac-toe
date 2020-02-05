@@ -14,18 +14,15 @@
         <header>
             <h2>Current Player: <span id="current"></span></h2>
         </header>
+        <div class="player">
+            <p>
+                Wins: <span id="wins">0</span>
+                Ties: <span id="ties">0</span>
+                Losses: <span id="losses">0</span>
+            </p>
+        </div>
 
         <div class="game">
-            <div class="player">
-                <h2>Player X</h2>
-                <p>
-                    <ul>
-                        <li>Wins: <span id="wins-1">0</span></li>
-                        <li>Ties: <span id="ties-1">0</span></li>
-                        <li>Losses: <span id="losses-1">0</span></li>
-                    </ul>
-                </p>
-            </div>
             <div class="game-board">
 
                 <button class="hover-effect" id="btn-1">
@@ -63,17 +60,17 @@
                 <button class="hover-effect" id="btn-9">
                     <img src="" alt="">
                 </button>
-
             </div>
-            <div class="player">
-                <h2>Player O</h2>
-                <p>
-                    <ul>
-                        <li>Wins: <span id="wins-2">0</span></li>
-                        <li>Ties: <span id="ties-2">0</span></li>
-                        <li>Losses: <span id="losses-2">0</span></li>
-                    </ul>
-                </p>
+            <div class="chat">
+                <div class="chat-box">
+
+                </div>
+                <div class="chat-form">
+                    <form id="chat-form">
+                        <input id="chat-input">
+                        <button>Send</button>
+                    </form>
+                </div>
             </div>
         </div>
         <button id="restart-btn">Restart</button>
@@ -81,7 +78,8 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="app.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
 </body>
 
 </html>

@@ -7,21 +7,50 @@ body {
     text-align: center;
 }
 
+span {
+    margin: 0 10px;
+}
+
 .game {
-    margin: 30px auto;
+    margin: 15px auto;
     display: flex;
-    justify-content: center;
+    justify-content: left;
 }
 
 .game-board {
-    width: 33%;
+    width: 50%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.player {
-    width: 33%;
+.chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    border: 1px solid #000;
+}
+
+.chat-box {
+    text-align: left;
+    max-height: -webkit-fill-available;
+    overflow-y: scroll;
+}
+
+.chat-box p {
+    margin-left: 2%;
+}
+
+
+#chat-input {
+    width: 70%;
+}
+
+#chat-form button {
+    width: 25%;
+    height: 30px;
+    background-color: rgb(202, 186, 186);
 }
 
 .game button {
@@ -41,13 +70,6 @@ body {
     background-color: #e70e0e;
 }
 
-li {
-    list-style: none;
-    text-align: left;
-    font-size: 18px;
-    margin: 5% 35%;
-}
-
 .game-board button.green {
     background-color: green;
 }
@@ -62,7 +84,7 @@ button img {
 }
 
 #restart-btn {
-    margin: 10px auto;
+    margin: 0 auto;
     height: 40px;
     width: 140px;
     background-color: #155a07;
@@ -77,25 +99,16 @@ button img {
     background-color: #21d121;
 }
 
-@media (max-width:900px) {
-    li {
-        font-size: 15px;
-        margin: 5% 20%;
-    }
-
-    .game-board {
-        width: 50%;
-    }
-}
-
 @media (max-width:600px) {
     .game-board {
-        width: 90%;
+        width: 80%;
+        margin: auto 10%;
     }
 
-    .player {
-        width: 50%;
-        order: -1;
+    .chat {
+        width: 80%;
+        height: 150px;
+        margin: 5% 10%;
     }
 
     .game {
