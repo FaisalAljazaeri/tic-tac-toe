@@ -192,6 +192,7 @@ const suqareClicked = function () {
     $(this).off();
     $(this).removeClass('hover-effect');
     $(this).addClass('clicked');
+    gameButtons.attr('disabled', 'true');
 
     // check win condition for the opponent or the player depending on whose playing.
     if (player.turn) {
