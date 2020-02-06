@@ -14,11 +14,13 @@ span {
 .game {
     margin: 15px auto;
     display: flex;
+    padding: 0 5%;
     justify-content: left;
 }
 
 .game-board {
     width: 50%;
+    margin-right: 5%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
