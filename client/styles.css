@@ -1,6 +1,6 @@
 body {
     /* background-color: rgba(180, 179, 179, 0.863); */
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .background-logo {
@@ -54,21 +54,36 @@ span {
     width: 25%;
     height: 65vh;
     position: fixed;
-    right: 6px;
+    right: 25px;
     border: 1px solid #417aa8;
     padding-bottom: 4px;
     border-radius: 15px;
+    margin-top: 5px;
 }
 
 .chat-box {
-    text-align: left;
     max-height: -webkit-fill-available;
     overflow-y: auto;
+    font-weight: 600;
+    font-size: 14px;
 }
 
 .chat-box p {
     margin-left: 2%;
+    margin-right: 2%;
     color: #417aa8;
+}
+
+.player-msg {
+    text-align: right;
+}
+
+.opponent-msg {
+    text-align: left;
+}
+
+.anounce-msg {
+    text-align: center;
 }
 
 #chat-input {
@@ -80,9 +95,15 @@ span {
     width: 25%;
     height: 30px;
     background-color: #417aa8;
+    cursor: pointer;
 }
 
-#chat-form input{
+#chat-form button:hover {
+    width: 26%;
+    height: 32px;
+}
+
+#chat-form input {
     border-radius: 30px;
 }
 
@@ -140,7 +161,7 @@ button img {
 }
 
 #restart-btn:hover {
-    width: 160px;
+    width: 150px;
     height: 60px;
 }
 
