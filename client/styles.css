@@ -1,5 +1,26 @@
 body {
+    /* background-color: rgba(180, 179, 179, 0.863); */
     font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.background-logo {
+    background-image: url("./images/logo.png");
+    /* background-color: red;
+    height: 80px;
+    width: 150px;
+    position: fixed;
+    left: 0;
+    top: 0; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position: center; */
+    margin-bottom: 15px;
+    height: 160px;
+    width: 150px;
+    position: absolute;
+    left: 0px;
+    top: 10px;
+    z-index: -1;
 }
 
 .container {
@@ -15,7 +36,7 @@ span {
     margin: 15px auto;
     display: flex;
     padding: 0 5%;
-    justify-content: left;
+    justify-content: center;
 }
 
 .game-board {
@@ -30,50 +51,68 @@ span {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 50%;
-    border: 1px solid #000;
+    width: 25%;
+    height: 65vh;
+    position: fixed;
+    right: 6px;
+    border: 1px solid #417aa8;
+    padding-bottom: 4px;
+    border-radius: 15px;
 }
 
 .chat-box {
     text-align: left;
     max-height: -webkit-fill-available;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .chat-box p {
     margin-left: 2%;
+    color: #417aa8;
 }
-
 
 #chat-input {
     width: 70%;
 }
 
 #chat-form button {
+    color: #fff;
     width: 25%;
     height: 30px;
-    background-color: rgb(202, 186, 186);
+    background-color: #417aa8;
+}
+
+#chat-form input{
+    border-radius: 30px;
 }
 
 .game button {
+    border-radius: 25px;
     width: 33%;
     height: 130px;
     padding: 0;
-    background-color: #6d0f0f;
-    border: 3px solid #FFF;
+    background-color: rgb(53, 85, 112);
+    border: 3px solid #fff;
 }
 
 .hover-effect:hover {
-    background-color: #e70e0e;
+    background-color: #417aa8;
     cursor: pointer;
 }
 
 .game button.clicked {
-    background-color: #e70e0e;
+    background-color: rgba(65, 122, 168, 0.644);
 }
 
 .game-board button.green {
-    background-color: green;
+    /* background-color:transparent; */
+    background-color: #417aa865;
+}
+
+#wins,
+#losses,
+#ties {
+    color: #417aa8;
 }
 
 button img {
@@ -82,26 +121,30 @@ button img {
 }
 
 #current {
-    color: #2CC135;
+    color: #417aa8;
 }
 
 #restart-btn {
     margin: 0 auto;
     height: 40px;
     width: 140px;
-    background-color: #155a07;
+    background-color: #417aa8;
     cursor: pointer;
     color: white;
     font-size: 18px;
     font-family: inherit;
-    border: 2px solid #FFF;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    position: fixed;
+    right: 46%;
 }
 
 #restart-btn:hover {
-    background-color: #21d121;
+    width: 160px;
+    height: 60px;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .game-board {
         width: 80%;
         margin: auto 10%;
@@ -116,5 +159,4 @@ button img {
     .game {
         flex-wrap: wrap;
     }
-
 }
