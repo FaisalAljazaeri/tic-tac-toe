@@ -184,7 +184,6 @@ const aPlayerHasChance = function(combination) {
 
 // Button click callback function
 const suqareClicked = function() {
-    switchTurn();
     // push the cliked square id to the global array that keeps track of board buttons
     allControlledSquares.push(this.id);
     // communicate to the opponent socket to disable the button pressed
@@ -230,12 +229,11 @@ const suqareClicked = function() {
 
         // Call endGame function to stop the current game.
         endGame();
+    } else {
+        // The current turn didn't result in a win or draw,
+        // so start the next turn.
+        switchTurn();
     }
-    // } else {
-    //     // The current turn didn't result in a win or draw,
-    //     // so start the next turn.
-    //     switchTurn();
-    // }
 };
 
 // Header to show the player currently playing
